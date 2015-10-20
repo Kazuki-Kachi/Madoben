@@ -61,10 +61,11 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         public IReadOnlyList<INoodle> Noodles { get; } = Enumerable.Repeat(new WhiteNoodle(), GetThreadRandom().Next(75, 151)).ToArray();
         public NoodleServeEventArg()
         {
-            var r = GetThreadRandom().Next(0, 3);
-            Noodles = Enumerable.Repeat<INoodle>(new WhiteNoodle(), 0).ToArray();
+            var randomNumber = GetThreadRandom().Next(0, 3);
+            var noodle = randomNumber == 0 ? new WhiteNoodle() : randomNumber == 1 ? new Udon() : (INoodle)new BuckwheatNoodle();
+            Noodles = Enumerable.Repeat<INoodle>(noodle, 0).ToArray();
 
-            WriteLine($"{Noodles.FirstOrDefault()?.Name ?? "そうめん"}を{ToString()}供給しました。");
+            WriteLine($"{noodle.Name}を{ToString()}供給しました。");
         }
 
         public override string ToString() => $"{Noodles?.Sum(noodle => noodle.Weight) ?? 0:0.0}g";
@@ -75,7 +76,7 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         None,
         Wheat,
         Buckwheat
-    }
+    }       
 
     /// <summary>Noodle's interface</summary>
     public interface INoodle
@@ -105,6 +106,7 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         public override string ToString() => $"{Weight}g";
 
     }
+
     public class BuckwheatNoodle : INoodle
     {
         public AllergyType Allergen { get; } = AllergyType.Buckwheat;
@@ -112,9 +114,7 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 
         public double Weight { get; } = GetThreadRandom().Next(20, 36) / 100D;
         public override string ToString() => $"{Weight}g";
-
     }
-
 
     public class Guest
     {
