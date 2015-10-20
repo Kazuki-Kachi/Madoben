@@ -10,6 +10,7 @@ using static ServedWhiteNoodlesFlowingInSmallFlumeLibraries.RandomProvider;
 
 namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 {
+
     public class Server : IDisposable
     {
         System.Timers.Timer timer = new System.Timers.Timer();
@@ -17,13 +18,13 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 
         public Server(double interval)
         {
-            
+
             timer.Interval = interval;
             timer.Elapsed += timer_Elapsed;
             timer.Start();
         }
 
-         void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) => RaiseServed(new NoodleServeEventArg());
+        void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) => RaiseServed(new NoodleServeEventArg());
 
         public event EventHandler<NoodleServeEventArg> Served;
         protected virtual void RaiseServed(NoodleServeEventArg e) => Served?.Invoke(this, e);
@@ -37,6 +38,7 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
             {
                 if(disposing)
                 {
+                    timer.Elapsed -= timer_Elapsed;
                     timer?.Dispose();
                 }
 
@@ -53,23 +55,66 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         #endregion
 
     }
+
     public class NoodleServeEventArg : EventArgs
     {
-        public IReadOnlyList<WhiteNoodle> Noodles { get; } = Enumerable.Repeat(new WhiteNoodle(), GetThreadRandom().Next(75, 151)).ToArray();
+        public IReadOnlyList<INoodle> Noodles { get; } = Enumerable.Repeat(new WhiteNoodle(), GetThreadRandom().Next(75, 151)).ToArray();
         public NoodleServeEventArg()
         {
-            WriteLine($"そうめんを{ToString()}供給しました。");
+            var r = GetThreadRandom().Next(0, 3);
+            Noodles = Enumerable.Repeat<INoodle>(new WhiteNoodle(), 0).ToArray();
+
+            WriteLine($"{Noodles.FirstOrDefault()?.Name ?? "そうめん"}を{ToString()}供給しました。");
         }
 
         public override string ToString() => $"{Noodles?.Sum(noodle => noodle.Weight) ?? 0:0.0}g";
     }
 
-    public class WhiteNoodle
+    public enum AllergyType
     {
+        None,
+        Wheat,
+        Buckwheat
+    }
+
+    /// <summary>Noodle's interface</summary>
+    public interface INoodle
+    {
+        double Weight { get; }
+        string Name { get; }
+        AllergyType Allergen { get; }
+    }
+
+    public class WhiteNoodle: INoodle
+    {
+        public AllergyType Allergen { get; } = AllergyType.Wheat;
+
+        public string Name { get; } = "そうめん";
+
+        public double Weight { get; } = GetThreadRandom().Next(20, 36) / 100D;
+        public override string ToString() => $"{Weight}g";
+        
+    }
+
+    public class Udon : INoodle
+    {
+        public AllergyType Allergen { get; } = AllergyType.Wheat;
+        public string Name { get; } = "うどん";
+
+        public double Weight { get; } = GetThreadRandom().NextDouble() + 8D;
+        public override string ToString() => $"{Weight}g";
+
+    }
+    public class BuckwheatNoodle : INoodle
+    {
+        public AllergyType Allergen { get; } = AllergyType.Buckwheat;
+        public string Name { get; } = "そば";
+
         public double Weight { get; } = GetThreadRandom().Next(20, 36) / 100D;
         public override string ToString() => $"{Weight}g";
 
     }
+
 
     public class Guest
     {
@@ -81,19 +126,19 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         public Guest() : this(nameof(Guest)) { }
         public Guest(string name) { Name = name; }
 
-        public int Picking(IReadOnlyList<WhiteNoodle> noodles)
+        public int Picking(IReadOnlyList<INoodle> noodles)
         {
             if(IsSatiety || GetThreadRandom().Next() % 7 == 0) return 0;
             return GetThreadRandom().Next(noodles.Count + 1);
         }
 
-        public void Eat(IEnumerable<WhiteNoodle> noodles)
+        public void Eat(IEnumerable<INoodle> noodles)
         {
             var amountOfPick = noodles?.Sum(noodle => noodle.Weight) ?? 0;
             if(amountOfPick < 1) return;
 
             AmountOfAte += amountOfPick;
-            WriteLine($"\t{Name}さんがそうめんを{amountOfPick:0.0}g食べました。");
+            WriteLine($"\t{Name}さんが{noodles.FirstOrDefault()?.Name}を{amountOfPick:0.0}g食べました。");
         }
     }
 
