@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\ServerHub.param.dev.json = PublishScripts\Templates\ServerHub.param.dev.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{042A6B45-4A3C-4206-95D5-16FA2508CFD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,26 @@ Global
 		{CA1A0507-8D59-4879-BA69-25E73E2FDC76}.Release|x64.Build.0 = Release|Any CPU
 		{CA1A0507-8D59-4879-BA69-25E73E2FDC76}.Release|x86.ActiveCfg = Release|Any CPU
 		{CA1A0507-8D59-4879-BA69-25E73E2FDC76}.Release|x86.Build.0 = Release|Any CPU
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|ARM.ActiveCfg = Debug|ARM
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|ARM.Build.0 = Debug|ARM
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|ARM.Deploy.0 = Debug|ARM
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|x64.ActiveCfg = Debug|x64
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|x64.Build.0 = Debug|x64
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|x64.Deploy.0 = Debug|x64
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|x86.ActiveCfg = Debug|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|x86.Build.0 = Debug|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Debug|x86.Deploy.0 = Debug|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|Any CPU.ActiveCfg = Release|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|ARM.ActiveCfg = Release|ARM
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|ARM.Build.0 = Release|ARM
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|ARM.Deploy.0 = Release|ARM
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|x64.ActiveCfg = Release|x64
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|x64.Build.0 = Release|x64
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|x64.Deploy.0 = Release|x64
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|x86.ActiveCfg = Release|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|x86.Build.0 = Release|x86
+		{042A6B45-4A3C-4206-95D5-16FA2508CFD5}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

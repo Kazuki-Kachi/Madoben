@@ -14,8 +14,7 @@ namespace ServerHub.Controllers
     {   
         public async Task<IHttpActionResult> PostAAA(IReadOnlyList<INoodle> noodles)
         {
-
-            HubContext.Clients.All.B();
+            
             return Ok();
         }
     }

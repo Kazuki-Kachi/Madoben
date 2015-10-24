@@ -158,5 +158,4 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         public static Random GetThreadRandom() => randomWrapper.Value;
     }
 
-
 }
