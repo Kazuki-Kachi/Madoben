@@ -58,12 +58,12 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 
     public class NoodleServeEventArg : EventArgs
     {
-        public IReadOnlyList<INoodle> Noodles { get; } = Enumerable.Repeat(new WhiteNoodle(), GetThreadRandom().Next(75, 151)).ToArray();
+        public IReadOnlyList<INoodle> Noodles { get; }
         public NoodleServeEventArg()
         {
             var randomNumber = GetThreadRandom().Next(0, 3);
             var noodle = randomNumber == 0 ? new WhiteNoodle() : randomNumber == 1 ? new Udon() : (INoodle)new BuckwheatNoodle();
-            Noodles = Enumerable.Repeat<INoodle>(noodle, 0).ToArray();
+            Noodles = Enumerable.Repeat(noodle, GetThreadRandom().Next(75, 151)).ToArray();
 
             WriteLine($"{noodle.Name}を{ToString()}供給しました。");
         }
