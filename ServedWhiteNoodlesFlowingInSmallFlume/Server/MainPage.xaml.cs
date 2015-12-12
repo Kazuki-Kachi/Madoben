@@ -24,7 +24,7 @@ namespace Server
     {
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

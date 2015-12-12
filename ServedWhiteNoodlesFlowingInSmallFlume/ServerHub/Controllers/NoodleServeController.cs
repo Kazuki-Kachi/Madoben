@@ -12,10 +12,6 @@ namespace ServerHub.Controllers
 {
     public class NoodleServeController : HubController<PushHub>
     {   
-        public async Task<IHttpActionResult> PostAAA(IReadOnlyList<INoodle> noodles)
-        {
-            
-            return Ok();
-        }
+
     }
 }

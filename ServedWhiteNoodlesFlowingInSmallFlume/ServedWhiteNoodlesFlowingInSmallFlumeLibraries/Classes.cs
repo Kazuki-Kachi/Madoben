@@ -18,7 +18,6 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 
         public Server(double interval)
         {
-
             timer.Interval = interval;
             timer.Elapsed += timer_Elapsed;
             timer.Start();
