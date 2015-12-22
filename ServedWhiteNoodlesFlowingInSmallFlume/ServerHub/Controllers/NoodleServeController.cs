@@ -10,7 +10,7 @@ using ServerHub.Hubs;
 
 namespace ServerHub.Controllers
 {
-    public class NoodleServeController : HubController<PushHub>
+    public class NoodleServeController : HubController<NoodlesServerHub>
     {   
 
     }
