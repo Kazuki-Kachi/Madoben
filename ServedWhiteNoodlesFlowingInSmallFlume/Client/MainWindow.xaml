@@ -1,0 +1,24 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        xmlns:vm="clr-namespace:Client.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="180" Width="400">
+    <Window.DataContext>
+        <vm:MainPageViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Label Content="名前" FontFamily="RiiPopKaku" FontSize="24" Margin="10,10,0,0" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left" Width="62"></Label>
+        <TextBox  FontFamily="RiiPopKaku" FontSize="24" Margin="150,10,5,0" Height="34" VerticalAlignment="Top" Text="{Binding Path=Name, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content="アレルギー" FontFamily="RiiPopKaku" FontSize="24" Margin="10,55,0,0" HorizontalAlignment="Left" Width="120" Height="34" VerticalAlignment="Top" />
+        <ComboBox FontFamily="RiiPopKaku" FontSize="24" Margin="150,55,5,0" Height="34" VerticalAlignment="Top" SelectedIndex="{Binding Path=AllergyType,Mode=OneWayToSource ,UpdateSourceTrigger=PropertyChanged,TargetNullValue=0}">
+            <ComboBoxItem Content="なし" FontSize="24"/>
+            <ComboBoxItem Content="小麦" FontSize="24"/>
+            <ComboBoxItem Content="蕎麦" FontSize="24"/>
+        </ComboBox>
+        <Button FontFamily="RiiPopKaku" FontSize="24" Content="決定" HorizontalAlignment="Right" Width="133" Height="45" VerticalAlignment="Bottom" Margin="0,0,5,5" x:Name="commit" ></Button>
+    </Grid>
+</Window>

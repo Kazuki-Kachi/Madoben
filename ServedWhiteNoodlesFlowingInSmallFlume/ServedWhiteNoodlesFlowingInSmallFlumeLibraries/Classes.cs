@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+
 using static System.Console;
 using static ServedWhiteNoodlesFlowingInSmallFlumeLibraries.RandomProvider;
 
@@ -75,7 +78,7 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         None,
         Wheat,
         Buckwheat
-    }       
+    }
 
     /// <summary>Noodle's interface</summary>
     public interface INoodle
@@ -85,7 +88,8 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         AllergyType Allergen { get; }
     }
 
-    public class WhiteNoodle: INoodle
+    [Serializable]
+    public class WhiteNoodle : INoodle
     {
         public AllergyType Allergen { get; } = AllergyType.Wheat;
 
@@ -93,19 +97,21 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 
         public double Weight { get; } = GetThreadRandom().Next(20, 36) / 100D;
         public override string ToString() => $"{Weight}g";
-        
+
     }
 
+    [Serializable]
     public class Udon : INoodle
     {
         public AllergyType Allergen { get; } = AllergyType.Wheat;
         public string Name { get; } = "うどん";
 
-        public double Weight { get; } = GetThreadRandom().NextDouble() + 8D;
+        public double Weight { get; } = GetThreadRandom().NextDouble() + 1D;
         public override string ToString() => $"{Weight}g";
 
     }
 
+    [Serializable]
     public class BuckwheatNoodle : INoodle
     {
         public AllergyType Allergen { get; } = AllergyType.Buckwheat;
@@ -117,13 +123,19 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
 
     public class Guest
     {
-        public string Name { get; }
+        public string Name { get; set; }
         public double Capacity { get; } = 270 * (GetThreadRandom().NextDouble() + 0.8);
         public bool IsSatiety => Capacity <= AmountOfAte;
         private double AmountOfAte { get; set; }
 
+        public AllergyType Allergy { get; set; }
+
         public Guest() : this(nameof(Guest)) { }
-        public Guest(string name) { Name = name; }
+        public Guest(string name)
+        {
+            Name = name;
+            Observable.Timer(TimeSpan.FromMinutes(1)).Subscribe(_ => AmountOfAte = Math.Max(AmountOfAte - 1, 0));
+        }
 
         public int Picking(IReadOnlyList<INoodle> noodles)
         {
@@ -131,13 +143,15 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
             return GetThreadRandom().Next(noodles.Count + 1);
         }
 
-        public void Eat(IEnumerable<INoodle> noodles)
+        public string Eat(IEnumerable<INoodle> noodles)
         {
             var amountOfPick = noodles?.Sum(noodle => noodle.Weight) ?? 0;
-            if(amountOfPick < 1) return;
+            if(amountOfPick < 1) return "";
 
             AmountOfAte += amountOfPick;
-            WriteLine($"\t{Name}さんが{noodles.FirstOrDefault()?.Name}を{amountOfPick:0.0}g食べました。");
+            var s = $"{Name}さんが{noodles.FirstOrDefault()?.Name}を{amountOfPick:0.0}g食べました。";
+            WriteLine(s);
+            return s;
         }
     }
 
@@ -157,4 +171,14 @@ namespace ServedWhiteNoodlesFlowingInSmallFlumeLibraries
         public static Random GetThreadRandom() => randomWrapper.Value;
     }
 
+    public static class NoodleListConverter
+    {
+        public static IReadOnlyList<INoodle> Convert(string value, Type type)
+        {
+            if(type == typeof(WhiteNoodle)) return JsonConvert.DeserializeObject<IReadOnlyList<WhiteNoodle>>(value);
+            if(type == typeof(Udon)) return JsonConvert.DeserializeObject<IReadOnlyList<Udon>>(value);
+            if(type == typeof(BuckwheatNoodle)) return JsonConvert.DeserializeObject<IReadOnlyList<BuckwheatNoodle>>(value);
+            return Array.Empty<INoodle>();
+        }
+    }
 }

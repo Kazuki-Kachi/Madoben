@@ -5,8 +5,13 @@
     xmlns:local="using:Server"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Server.ViewModel"
     mc:Ignorable="d">
-
-    <SplitView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    </SplitView>
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <RadioButton IsChecked="{x:Bind ViewModel.IsSelectedWhiteNoodle, Mode=TwoWay}" Content="そうめん" FontFamily="RiiPopkaku" FontSize="32" Margin="318,39,-186,643" />
+        <RadioButton IsChecked="{x:Bind ViewModel.IsSelectedUdon, Mode=TwoWay}" Content="うどん" FontFamily="RiiPopkaku" FontSize="32" Margin="549,39,-199,643" />
+        <RadioButton IsChecked="{x:Bind ViewModel.IsSelectedBuckwheatNoodle, Mode=TwoWay}" Content="そば" FontFamily="RiiPopkaku" FontSize="32" Margin="739,39,-239,643" />
+        <Button Click="{x:Bind }" Content="流す" FontFamily="RiiPopkaku" FontSize="32" Margin="888,39,-957,-39" Width="153"></Button>
+        <TextBlock Text="{x:Bind ViewModel.ServedInformation, Mode=OneWay}" Margin="0,106,-1280,-720"></TextBlock>
+    </RelativePanel>
 </Page>
